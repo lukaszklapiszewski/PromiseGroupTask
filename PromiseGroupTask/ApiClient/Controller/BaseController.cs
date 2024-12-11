@@ -23,7 +23,7 @@ namespace ApiClient.Controller
         protected UriBuilder GetUriBuilder()
         {
             UriBuilder uriBuilder = new UriBuilder();
-            uriBuilder.Scheme = "http";
+            uriBuilder.Scheme = "https";
             uriBuilder.Host = Endpoint.ApiEndpoint;
 
             return uriBuilder;

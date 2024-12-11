@@ -24,7 +24,7 @@ namespace ApiClient.Controller
         {
             UriBuilder uriBuilder = GetUriBuilder();
             uriBuilder.Path = "orders";
-            uriBuilder.Query = string.Format("pageNumber={0}&itemsPerPage={1}", pageNumber, itemsPerPage);
+            uriBuilder.Query = string.Format("page={0}&limit={1}", pageNumber, itemsPerPage);
 
             return await CommonApiClient.Get<List<Order>>(uriBuilder.Uri.AbsoluteUri);
         }
