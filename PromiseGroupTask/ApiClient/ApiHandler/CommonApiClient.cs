@@ -9,23 +9,24 @@ using System.Net.Http.Json;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using ApiClient.ApiHandler.Interface;
 
 namespace ApiClient.ApiHandler
 {
     /// <summary>
-    /// Apli client class used to make requests
+    /// Api client class used to make requests
     /// </summary>
-    public class CommonApiClient
+    public class CommonApiClient : IApiClient
     {
-        static readonly HttpClient client = new HttpClient();
+        private static readonly HttpClient client = new HttpClient();
 
         /// <summary>
-        /// Generates response from given endpoint
+        /// Generates async response from given endpoint
         /// </summary>
         /// <typeparam name="T">Type to be returned from endpoint</typeparam>
         /// <param name="endpoint">Endpoint to be used to reach data</param>
         /// <returns>Parsed data from server or null</returns>
-        public static async Task<T?> Get<T>(string endpoint)
+        public async Task<T?> GetAsync<T>(string endpoint)
         {
             try
             {
@@ -39,13 +40,13 @@ namespace ApiClient.ApiHandler
         }
 
         /// <summary>
-        /// Sends HTTP POST to given endpoint
+        /// Sends async HTTP POST to given endpoint
         /// </summary>
         /// <typeparam name="T">Type of data in payload</typeparam>
         /// <param name="endpoint">Endpoint to be used to post data</param>
         /// <param name="payload">Data payoad</param>
         /// <returns>HttpStatusCode from request</returns>
-        public static async Task<HttpStatusCode> Post<T>(string endpoint, T payload)
+        public async Task<HttpStatusCode> PostAsync<T>(string endpoint, T payload)
         {
             try
             {

@@ -1,4 +1,5 @@
 ﻿using ApiClient.ApiHandler;
+using ApiClient.ApiHandler.Interface;
 using ApiClient.Config;
 using ApiClient.Model;
 using System;
@@ -14,6 +15,13 @@ namespace ApiClient.Controller
     /// </summary>
     public class OrderController : BaseController
     {
+        private IApiClient apiClient;
+
+        public OrderController(IApiClient apiClient)
+        {
+            this.apiClient = apiClient;
+        }
+
         /// <summary>
         /// Fetch books list from API
         /// </summary>
@@ -26,7 +34,8 @@ namespace ApiClient.Controller
             uriBuilder.Path = "orders";
             uriBuilder.Query = string.Format("page={0}&limit={1}", pageNumber, itemsPerPage);
 
-            return await CommonApiClient.Get<List<Order>>(uriBuilder.Uri.AbsoluteUri);
+            List<Order>? orders = await apiClient.GetAsync<List<Order>>(uriBuilder.Uri.AbsoluteUri);
+            return orders != null ? orders : new List<Order>();
         }
     }
 }

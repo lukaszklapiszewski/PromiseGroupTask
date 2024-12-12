@@ -1,4 +1,5 @@
 ﻿using ApiClient.ApiHandler;
+using ApiClient.ApiHandler.Interface;
 using ApiClient.Config;
 using ApiClient.Model;
 using System;
@@ -15,6 +16,13 @@ namespace ApiClient.Controller
     /// </summary>
     public class BookController : BaseController
     {
+        private IApiClient apiClient;
+
+        public BookController(IApiClient apiClient)
+        {
+            this.apiClient = apiClient;
+        }
+
         /// <summary>
         /// Fetch books list from API
         /// </summary>
@@ -23,7 +31,9 @@ namespace ApiClient.Controller
         {
             UriBuilder uriBuilder = GetUriBuilder();
             uriBuilder.Path = "books";
-            return await CommonApiClient.Get<List<Book>>(uriBuilder.Uri.AbsoluteUri);
+            List<Book>? books = await apiClient.GetAsync<List<Book>>(uriBuilder.Uri.AbsoluteUri);
+
+            return books != null ? books : new List<Book>();
         }
 
         /// <summary>
@@ -35,7 +45,7 @@ namespace ApiClient.Controller
         {
             UriBuilder uriBuilder = GetUriBuilder();
             uriBuilder.Path = "books";
-            return await CommonApiClient.Post(uriBuilder.Uri.AbsoluteUri, book);
+            return await apiClient.PostAsync(uriBuilder.Uri.AbsoluteUri, book);
         }
     }
 }

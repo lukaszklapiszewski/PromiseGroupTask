@@ -1,10 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using ApiClient.ApiHandler;
+using ApiClient.ApiHandler.Interface;
 using ApiClient.Controller;
 using ApiClient.Exceptions;
 using ApiClient.Model;
 using System.Net;
 
-BookController bookController = new BookController();
+IApiClient apiClient = new CommonApiClient();
+
+BookController bookController = new BookController(apiClient);
 try
 {
     List<Book>? books = await bookController.GetBooks();
@@ -58,7 +62,7 @@ catch (ApiException apiException)
 
 try
 {
-    OrderController orderController = new OrderController();
+    OrderController orderController = new OrderController(apiClient);
     List<Order>? orders = await orderController.GetOrders(3, 10);
     Console.WriteLine(string.Format("Orders count: {0}", orders != null ? orders.Count : "empty list"));
     if (orders != null)
