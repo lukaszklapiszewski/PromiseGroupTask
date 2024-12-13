@@ -1,5 +1,6 @@
 ﻿using ApiClient.ApiHandler;
 using ApiClient.ApiHandler.Interface;
+using ApiClient.Controller.Interface;
 using ApiClient.Model;
 
 namespace ApiClient.Controller
@@ -7,11 +8,14 @@ namespace ApiClient.Controller
     /// <summary>
     /// Order controller class
     /// </summary>
-    public class OrderController : BaseController
+    public class OrderController : BaseController, IPaginatedController
     {
         private const string Endpoint = "orders";
 
         private IApiClient apiClient;
+
+        private int currentPage = 1;
+        public int CurrentPage { get => currentPage; set => currentPage = value; }
 
         public OrderController(IApiClient apiClient)
         {

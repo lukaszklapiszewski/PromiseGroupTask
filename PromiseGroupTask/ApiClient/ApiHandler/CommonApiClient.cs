@@ -33,7 +33,7 @@ namespace ApiClient.ApiHandler
                 }
                 else
                 {
-                    throw new ApiException("Error, empty response returned");
+                    return new Response<T>("Error, empty response returned");
                 }
             }
             catch (ApiException ex)
@@ -72,6 +72,10 @@ namespace ApiClient.ApiHandler
             catch (HttpRequestException)
             {
                 return new Response<HttpStatusCode>("An exception occured while processing request");
+            }
+            catch (Exception)
+            {
+                return new Response<HttpStatusCode>("General error occured while processing request");
             }
         }
 
