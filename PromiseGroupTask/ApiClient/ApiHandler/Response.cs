@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ApiClient.ApiHandler
+﻿namespace ApiClient.ApiHandler
 {
+    /// <summary>
+    /// Generic response class for passing data from api
+    /// </summary>
+    /// <typeparam name="T">Type of object to be returned by this class</typeparam>
     public class Response<T>
     {
         public T Result { get; set; }

@@ -1,8 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-using ApiClient.ApiHandler;
+﻿using ApiClient.ApiHandler;
 using ApiClient.ApiHandler.Interface;
 using ApiClient.Controller;
-using ApiClient.Exceptions;
 using ApiClient.Model;
 using System.Net;
 

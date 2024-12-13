@@ -1,15 +1,13 @@
 ﻿using ApiClient.ApiHandler.Interface;
 using ApiClient.ApiHandler;
 using ApiClient.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 
 namespace ApiClient.Controller
 {
+    /// <summary>
+    /// Login controller class
+    /// </summary>
     public class LoginController : BaseController
     {
         private const string Endpoint = "login";
