@@ -6,8 +6,8 @@
     /// <typeparam name="T">Type of object to be returned by this class</typeparam>
     public class Response<T>
     {
-        public T Result { get; set; }
-        public string ErrorMessage { get; set; }
+        public T Result { get; }
+        public string ErrorMessage { get; }
 
         public Response(T result)
         {

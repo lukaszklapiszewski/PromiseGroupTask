@@ -6,11 +6,8 @@ namespace ApiClient.Controller
     /// <summary>
     /// Base controller class
     /// </summary>
-    public class BaseController : IController
+    public class BaseController
     {
-        private int _currentPage = 1;
-        public int CurrentPage { get => _currentPage; set => _currentPage = value; }
-
         /// <summary>
         /// Get preconfigured UriBuilder
         /// </summary>
