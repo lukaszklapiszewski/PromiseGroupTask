@@ -1,14 +1,7 @@
 ﻿using ApiClient.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
-using System.Threading.Tasks;
 using ApiClient.ApiHandler.Interface;
 using ApiClient.Model;
 
@@ -47,11 +40,11 @@ namespace ApiClient.ApiHandler
             {
                 return new Response<T>(ex.Message);
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 return new Response<T>("An HTTP exception occured while processing request");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new Response<T>("General error occured while processing request");
             }
@@ -76,7 +69,7 @@ namespace ApiClient.ApiHandler
             {
                 return new Response<HttpStatusCode>(ex.Message);
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 return new Response<HttpStatusCode>("An exception occured while processing request");
             }
