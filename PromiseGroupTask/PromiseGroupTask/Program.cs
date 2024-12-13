@@ -8,21 +8,42 @@ using System.Net;
 
 IApiClient apiClient = new CommonApiClient();
 
-BookController bookController = new BookController(apiClient);
-try
+LoginController loginController = new LoginController(apiClient);
+
+User user = new User()
 {
-    List<Book>? books = await bookController.GetBooks();
-    Console.WriteLine(string.Format("Boooks count: {0}", books != null ? books.Count : "empty list"));
-    if (books != null)
+    Login = "testlogin@test.eu",
+    Password = "testPassword"
+};
+
+Response<HttpStatusCode> loginResponse = await loginController.Login(user);
+
+if(loginResponse.Result != HttpStatusCode.OK)
+{
+    Console.WriteLine(loginResponse.ErrorMessage);
+    Console.ReadKey();
+    return;
+}
+
+BookController bookController = new BookController(apiClient);
+
+Response<List<Book>> booksResponse = await bookController.GetBooks();
+
+if (string.IsNullOrEmpty(booksResponse.ErrorMessage))
+{
+
+    Console.WriteLine(string.Format("Boooks count: {0}", booksResponse.Result.Count));
+    if (booksResponse != null)
     {
-        foreach (Book bookItem in books)
+        foreach (Book bookItem in booksResponse.Result)
         {
             Console.WriteLine(string.Format("Tite: {0} Price {1} Bookstand {2} Shelf {3}", bookItem.Title, Math.Round(bookItem.Price, 2), bookItem.Bookstand, bookItem.Shelf));
         }
     }
-}catch(ApiException apiException)
+}
+else
 {
-    Console.WriteLine(apiException.Message);
+    Console.WriteLine(booksResponse.ErrorMessage);
 }
 
 Random random = new Random();
@@ -43,10 +64,11 @@ Book book = new Book
     Title = string.Format("Title {0}", random.Next(20))
 };
 
-try
+Response<HttpStatusCode> addBookResponse = await bookController.AddBook(book);
+
+if (string.IsNullOrEmpty(booksResponse.ErrorMessage))
 {
-    HttpStatusCode httpStatusCode = await bookController.AddBook(book);
-    if (httpStatusCode == HttpStatusCode.Created)
+    if (addBookResponse.Result == HttpStatusCode.Created)
     {
         Console.WriteLine("Book created!");
     }
@@ -55,27 +77,29 @@ try
         Console.WriteLine("Error while creating book");
     }
 }
-catch (ApiException apiException)
+else
 {
-    Console.WriteLine(apiException.Message);
+    Console.WriteLine(booksResponse.ErrorMessage);
 }
 
-try
+OrderController orderController = new OrderController(apiClient);
+Response<List<Order>> ordersResponse = await orderController.GetOrders(3, 10);
+
+if (string.IsNullOrEmpty(booksResponse.ErrorMessage))
 {
-    OrderController orderController = new OrderController(apiClient);
-    List<Order>? orders = await orderController.GetOrders(3, 10);
-    Console.WriteLine(string.Format("Orders count: {0}", orders != null ? orders.Count : "empty list"));
-    if (orders != null)
+    Console.WriteLine(string.Format("Orders count: {0}", ordersResponse.Result.Count));
+
+    if (ordersResponse != null)
     {
-        foreach (Order order in orders)
+        foreach (Order order in ordersResponse.Result)
         {
             Console.WriteLine(string.Format("Order: {0} Order lines count {1}", order.OrderId, order.OrderLines.Count));
         }
     }
 }
-catch (ApiException apiException)
+else
 {
-    Console.WriteLine(apiException.Message);
+    Console.WriteLine(booksResponse.ErrorMessage);
 }
 
 Console.ReadKey();

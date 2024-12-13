@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApiClient.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,7 +10,8 @@ namespace ApiClient.ApiHandler.Interface
 {
     public interface IApiClient
     {
-        Task<T?> GetAsync<T>(string endpoint);
-        Task<HttpStatusCode> PostAsync<T>(string endpoint, T payload);
+        Task<Response<HttpStatusCode>> LoginAsync(string endpoint, User user);
+        Task<Response<T>> GetAsync<T>(string endpoint);
+        Task<Response<HttpStatusCode>> PostAsync<T>(string endpoint, T payload);
     }
 }

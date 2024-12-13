@@ -16,7 +16,9 @@ namespace ApiClient.Controller
     /// </summary>
     public class BookController : BaseController
     {
-        private IApiClient apiClient;
+        private const string Endpoint = "books";
+
+        private IApiClient apiClient;        
 
         public BookController(IApiClient apiClient)
         {
@@ -26,25 +28,23 @@ namespace ApiClient.Controller
         /// <summary>
         /// Fetch books list from API
         /// </summary>
-        /// <returns>List of books or null</returns>
-        public async Task<List<Book>?> GetBooks()
+        /// <returns>Api response with List of books or with error message if something went wrong</returns>
+        public async Task<Response<List<Book>>> GetBooks()
         {
             UriBuilder uriBuilder = GetUriBuilder();
-            uriBuilder.Path = "books";
-            List<Book>? books = await apiClient.GetAsync<List<Book>>(uriBuilder.Uri.AbsoluteUri);
-
-            return books != null ? books : new List<Book>();
+            uriBuilder.Path = Endpoint;
+            return await apiClient.GetAsync<List<Book>>(uriBuilder.Uri.AbsoluteUri);
         }
 
         /// <summary>
         /// Creates new book in database
         /// </summary>
         /// <param name="book">Book to be created</param>
-        /// <returns>HttpStatusCode of request</returns>
-        public async Task<HttpStatusCode> AddBook(Book book)
+        /// <returns>Api response with HttpStatusCode or with error message if something went wrong</returns>
+        public async Task<Response<HttpStatusCode>> AddBook(Book book)
         {
             UriBuilder uriBuilder = GetUriBuilder();
-            uriBuilder.Path = "books";
+            uriBuilder.Path = Endpoint;
             return await apiClient.PostAsync(uriBuilder.Uri.AbsoluteUri, book);
         }
     }

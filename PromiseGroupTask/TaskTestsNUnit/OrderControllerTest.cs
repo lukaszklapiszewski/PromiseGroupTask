@@ -1,4 +1,5 @@
-﻿using ApiClient.ApiHandler.Interface;
+﻿using ApiClient.ApiHandler;
+using ApiClient.ApiHandler.Interface;
 using ApiClient.Controller;
 using ApiClient.Model;
 using Newtonsoft.Json;
@@ -44,25 +45,27 @@ namespace TaskTestsNUnit
         [Test]
         public async Task GetAll()
         {
-            List<Order>? orders = await orderController.GetOrders(1, int.MaxValue);
-            Assert.That(orders, Is.Not.Null);
-            Assert.That(orders!.Count, Is.EqualTo(100));
+            Response<List<Order>> ordersResponse = await orderController.GetOrders(1, int.MaxValue);
+            Assert.That(ordersResponse.Result, Is.Not.Null);
+            Assert.That(ordersResponse.Result.Count, Is.EqualTo(100));
         }
 
         [Test]
         public async Task GetDifferentPages()
         {
-            List<Order>? ordersPage1 = await orderController.GetOrders(1, 3);
-            Assert.That(ordersPage1, Is.Not.Null);
-            Assert.That(ordersPage1!.Count, Is.EqualTo(3));
+            Response<List<Order>> ordersPage1Response = await orderController.GetOrders(1, 3);
+            Assert.That(ordersPage1Response, Is.Not.Null);
+            Assert.That(ordersPage1Response.Result, Is.Not.Null);
+            Assert.That(ordersPage1Response.Result.Count, Is.EqualTo(3));
 
-            List<Order>? ordersPage2 = await orderController.GetOrders(2, 3);
-            Assert.That(ordersPage2, Is.Not.Null);
-            Assert.That(ordersPage2!.Count, Is.EqualTo(3));
+            Response<List<Order>> ordersPage2Response = await orderController.GetOrders(2, 3);
+            Assert.That(ordersPage2Response, Is.Not.Null);
+            Assert.That(ordersPage2Response.Result, Is.Not.Null);
+            Assert.That(ordersPage2Response.Result.Count, Is.EqualTo(3));
 
-            foreach (var order in ordersPage1)
+            foreach (var order in ordersPage1Response.Result)
             {
-                foreach(var order2 in ordersPage2)
+                foreach(var order2 in ordersPage2Response.Result)
                 {
                     Assert.That(order.OrderId, Is.Not.EqualTo(order2.OrderId));
                 }
@@ -72,18 +75,20 @@ namespace TaskTestsNUnit
         [Test]
         public async Task GetSamePages()
         {
-            List<Order>? ordersPage1 = await orderController.GetOrders(2, 3);
-            Assert.That(ordersPage1, Is.Not.Null);
-            Assert.That(ordersPage1!.Count, Is.EqualTo(3));
+            Response<List<Order>> ordersPage1Response = await orderController.GetOrders(2, 3);
+            Assert.That(ordersPage1Response, Is.Not.Null);
+            Assert.That(ordersPage1Response.Result, Is.Not.Null);
+            Assert.That(ordersPage1Response.Result.Count, Is.EqualTo(3));
 
-            List<Order>? ordersPage2 = await orderController.GetOrders(2, 3);
-            Assert.That(ordersPage2, Is.Not.Null);
-            Assert.That(ordersPage2!.Count, Is.EqualTo(3));
+            Response<List<Order>> ordersPage2Response = await orderController.GetOrders(2, 3);
+            Assert.That(ordersPage2Response, Is.Not.Null);
+            Assert.That(ordersPage2Response.Result, Is.Not.Null);
+            Assert.That(ordersPage2Response.Result.Count, Is.EqualTo(3));
 
             for(int i = 0; i < 3; i++)
             {
                 {
-                    Assert.That(ordersPage1[i].OrderId, Is.EqualTo(ordersPage2[i].OrderId));
+                    Assert.That(ordersPage1Response.Result[i].OrderId, Is.EqualTo(ordersPage2Response.Result[i].OrderId));
                 }
             }
         }
@@ -91,17 +96,19 @@ namespace TaskTestsNUnit
         [Test]
         public async Task GetLastPage()
         {
-            List<Order>? ordersPage1 = await orderController.GetOrders(34, 3);
-            Assert.That(ordersPage1, Is.Not.Null);
-            Assert.That(ordersPage1!.Count, Is.EqualTo(1));
+            Response<List<Order>> ordersPage1Response = await orderController.GetOrders(34, 3);
+            Assert.That(ordersPage1Response, Is.Not.Null);
+            Assert.That(ordersPage1Response.Result, Is.Not.Null);
+            Assert.That(ordersPage1Response.Result.Count, Is.EqualTo(1));
         }
 
         [Test]
         public async Task GetOutOfRangePage()
         {
-            List<Order>? ordersPage1 = await orderController.GetOrders(35, 3);
-            Assert.That(ordersPage1, Is.Not.Null);
-            Assert.That(ordersPage1!.Count, Is.EqualTo(0));
+            Response<List<Order>> ordersPage1Response = await orderController.GetOrders(35, 3);
+            Assert.That(ordersPage1Response, Is.Not.Null);
+            Assert.That(ordersPage1Response.Result, Is.Not.Null);
+            Assert.That(ordersPage1Response.Result.Count, Is.EqualTo(0));
         }
     }
 }
