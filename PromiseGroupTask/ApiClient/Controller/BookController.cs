@@ -1,5 +1,6 @@
 ﻿using ApiClient.ApiHandler;
 using ApiClient.ApiHandler.Interface;
+using ApiClient.Controller.Interface;
 using ApiClient.Model;
 using System.Net;
 
@@ -12,7 +13,7 @@ namespace ApiClient.Controller
     {
         private const string Endpoint = "books";
 
-        private IApiClient apiClient;        
+        private IApiClient apiClient;
 
         public BookController(IApiClient apiClient)
         {

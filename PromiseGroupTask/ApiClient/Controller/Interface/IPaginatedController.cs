@@ -3,7 +3,7 @@
     /// <summary>
     /// Interface for controller classes
     /// </summary>
-    internal interface IController
+    internal interface IPaginatedController
     {
         int CurrentPage {  get; set; }
     }
