@@ -1,3 +1,4 @@
+using ApiClient.ApiHandler;
 using ApiClient.ApiHandler.Interface;
 using ApiClient.Controller;
 using ApiClient.Model;
@@ -60,9 +61,9 @@ namespace TaskTestsNUnit
         [Test]
         public async Task Test_GetBooks()
         {
-            List<Book>? books = await bookController.GetBooks();
-            Assert.That(books, Is.Not.Null);
-            Assert.That(books!.Any(), Is.True);
+            Response<List<Book>> booksResponse = await bookController.GetBooks();
+            Assert.That(booksResponse.Result, Is.Not.Null);
+            Assert.That(booksResponse.Result!.Any(), Is.True);
         }
 
         [Test]
@@ -88,8 +89,8 @@ namespace TaskTestsNUnit
                     }
             };
 
-            HttpStatusCode httpStatusCode = await bookController.AddBook(book);
-            Assert.That(httpStatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Response<HttpStatusCode> addBookResponse = await bookController.AddBook(book);
+            Assert.That(addBookResponse.Result, Is.EqualTo(HttpStatusCode.Created));
         }
     }
 }
