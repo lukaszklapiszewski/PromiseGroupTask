@@ -40,11 +40,11 @@ namespace ApiClient.ApiHandler
             {
                 return new Response<T>(ex.Message);
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 return new Response<T>("An HTTP exception occured while processing request");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new Response<T>("General error occured while processing request");
             }
@@ -69,7 +69,7 @@ namespace ApiClient.ApiHandler
             {
                 return new Response<HttpStatusCode>(ex.Message);
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 return new Response<HttpStatusCode>("An exception occured while processing request");
             }
